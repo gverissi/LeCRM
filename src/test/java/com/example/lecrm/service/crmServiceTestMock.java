@@ -57,7 +57,7 @@ class crmServiceTestMock {
         Client client = new Client("nom", "description");
         Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
         // When
-        crmService.createContactForClient(client, contact);
+        crmService.createContactForAClient(client, contact);
         // Then
         verify(clientDaoMock).save(client);
         verify(contactDaoMock).save(contact);
@@ -72,10 +72,10 @@ class crmServiceTestMock {
         Contact contact3 = new Contact("nom3", "prenom", LocalDate.now(), "adresse", "email", "tel");
         Contact contact4 = new Contact("nom4", "prenom", LocalDate.now(), "adresse", "email", "tel");
         // When
-        crmService.createContactForClient(client, contact1);
-        crmService.createContactForClient(client, contact2);
-        crmService.createContactForClient(client, contact3);
-        Exception thrown = assertThrows(Exception.class, () -> crmService.createContactForClient(client, contact4));
+        crmService.createContactForAClient(client, contact1);
+        crmService.createContactForAClient(client, contact2);
+        crmService.createContactForAClient(client, contact3);
+        Exception thrown = assertThrows(Exception.class, () -> crmService.createContactForAClient(client, contact4));
         // Then
         assertTrue(thrown.getMessage().contains("3 contacts"));
     }

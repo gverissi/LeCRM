@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,32 +26,30 @@ class ContactDaoInterfaceTest {
     }
 
     @Test
-    void read() {
+    void read() throws DaoException {
         // Given
         Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
         contactDao.save(contact);
         // When
-        Contact savedContact = contactDao.findById(contact.getIdContact()).orElse(null);
+        Contact savedContact = contactDao.findById(contact.getIdContact());
         // Then
-        assertNotNull(savedContact);
         assertEquals(contact, savedContact);
     }
 
     @Test
-    void update() {
+    void update() throws DaoException {
         // Given
         Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
         contactDao.save(contact);
         Integer idContact = contact.getIdContact();
-        int nbContacts = ((Collection<?>) contactDao.findAll()).size();
+        int nbContacts = contactDao.findAll().size();
         // When
         String newName = "myName";
         contact.setNom(newName);
         contactDao.save(contact);
-        Contact updatedContact = contactDao.findById(idContact).orElse(null);
-        int nbContactsAfterUpdate = ((Collection<?>) contactDao.findAll()).size();
+        Contact updatedContact = contactDao.findById(idContact);
+        int nbContactsAfterUpdate = contactDao.findAll().size();
         // Then
-        assertNotNull(updatedContact);
         assertEquals(contact, updatedContact);
         assertEquals(newName, updatedContact.getNom());
         assertEquals(nbContacts, nbContactsAfterUpdate);
@@ -65,11 +62,11 @@ class ContactDaoInterfaceTest {
         contactDao.save(contact1);
         Contact contact2 = new Contact("nom2", "prenom2", LocalDate.now(), "adresse2", "email2", "tel2");
         contactDao.save(contact2);
-        int nbContacts = ((Collection<?>) contactDao.findAll()).size();
+        int nbContacts = contactDao.findAll().size();
         // When
         contactDao.delete(contact2);
         // Then
-        assertEquals(nbContacts - 1, ((Collection<?>) contactDao.findAll()).size());
+        assertEquals(nbContacts - 1, contactDao.findAll().size());
     }
 
 }

@@ -21,7 +21,7 @@ class VilleDaoInterfaceTest {
     VilleDaoInterface villeDao;
 
     @Test
-    void create() {
+    void create() throws DaoException {
         // Given
         Contact contact1 = new Contact("nom1", "prenom1", LocalDate.now(), "adresse1", "email1", "tel1");
         Contact contact2 = new Contact("nom2", "prenom2", LocalDate.now(), "adresse2", "email2", "tel2");
@@ -37,8 +37,7 @@ class VilleDaoInterfaceTest {
         assertNotNull(savedContact2.getIdContact());
         assertEquals("ma Ville", savedContact1.getVille().getNom());
         assertEquals("ma Ville", savedContact2.getVille().getNom());
-        Contact savedContact22 = contactDao.findById(savedContact2.getIdContact()).orElse(null);
-        assert savedContact22 != null;
+        Contact savedContact22 = contactDao.findById(savedContact2.getIdContact());
         assertEquals("ma Ville", savedContact22.getVille().getNom());
     }
 

@@ -23,7 +23,7 @@ class ClientDaoInterfaceTest {
 
     @Test
     @Transactional
-    void create() {
+    void create() throws DaoException {
         // Given
         Contact contact1 = new Contact("nom1", "prenom1", LocalDate.now(), "adresse1", "email1", "tel1");
         Contact contact2 = new Contact("nom2", "prenom2", LocalDate.now(), "adresse2", "email2", "tel2");
@@ -34,9 +34,8 @@ class ClientDaoInterfaceTest {
         clientDao.save(client);
         contactDao.save(contact1);
         contactDao.save(contact2);
-        Client savedClient = clientDao.findById(client.getIdClient()).orElse(null);
+        Client savedClient = clientDao.findById(client.getIdClient());
         // Then
-        assertNotNull(savedClient);
         assertNotNull(client.getIdClient());
         assertNotNull(contact1.getIdContact());
         assertNotNull(contact2.getIdContact());

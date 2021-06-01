@@ -49,7 +49,7 @@ class crmServiceTest {
         Client client = new Client("nom", "description");
         Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
         // When
-        crmService.createContactForClient(client, contact);
+        crmService.createContactForAClient(client, contact);
         // Then
         assertEquals(1, client.getContacts().size());
         assertEquals(contact, client.getContacts().get(0));
@@ -65,10 +65,10 @@ class crmServiceTest {
         Contact contact3 = new Contact("nom3", "prenom", LocalDate.now(), "adresse", "email", "tel");
         Contact contact4 = new Contact("nom4", "prenom", LocalDate.now(), "adresse", "email", "tel");
         // When
-        crmService.createContactForClient(client, contact1);
-        crmService.createContactForClient(client, contact2);
-        crmService.createContactForClient(client, contact3);
-        Exception thrown = assertThrows(Exception.class, () -> crmService.createContactForClient(client, contact4));
+        crmService.createContactForAClient(client, contact1);
+        crmService.createContactForAClient(client, contact2);
+        crmService.createContactForAClient(client, contact3);
+        Exception thrown = assertThrows(Exception.class, () -> crmService.createContactForAClient(client, contact4));
         // Then
         assertTrue(thrown.getMessage().contains("3 contacts"));
     }
@@ -80,10 +80,10 @@ class crmServiceTest {
         Client client = new Client("nom", "description");
         Contact contact1 = new Contact("nom1", "prenom", LocalDate.now(), "adresse", "email", "tel");
         Contact contact2 = new Contact("nom2", "prenom", LocalDate.now(), "adresse", "email", "tel");
-        crmService.createContactForClient(client, contact1);
-        crmService.createContactForClient(client, contact2);
+        crmService.createContactForAClient(client, contact1);
+        crmService.createContactForAClient(client, contact2);
         // When
-        List<Contact> contacts = crmService.findAllContactsByClient(client);
+        List<Contact> contacts = crmService.getAllContactsOfAClient(client);
         // Then
         assertEquals(2, contacts.size());
     }
@@ -100,14 +100,14 @@ class crmServiceTest {
         Client client3 = new Client("nom3", "description3");
         Ville ville1 = new Ville("ville1");
         Ville ville2 = new Ville("ville2");
-        crmService.createVilleForContact(contact1, ville1);
-        crmService.createVilleForContact(contact2, ville1);
-        crmService.createVilleForContact(contact3, ville1);
-        crmService.createVilleForContact(contact4, ville2);
-        crmService.createContactForClient(client1, contact1);
-        crmService.createContactForClient(client2, contact2);
-        crmService.createContactForClient(client2, contact3);
-        crmService.createContactForClient(client3, contact4);
+        crmService.createVilleForAContact(contact1, ville1);
+        crmService.createVilleForAContact(contact2, ville1);
+        crmService.createVilleForAContact(contact3, ville1);
+        crmService.createVilleForAContact(contact4, ville2);
+        crmService.createContactForAClient(client1, contact1);
+        crmService.createContactForAClient(client2, contact2);
+        crmService.createContactForAClient(client2, contact3);
+        crmService.createContactForAClient(client3, contact4);
         // When
         List<Client> clients = crmService.findAllClientsWithContactIn("ville1");
         // Then
