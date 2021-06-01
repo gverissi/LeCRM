@@ -25,6 +25,10 @@ public class Contact {
     @JoinColumn(name="client_id")
     private Client client;
 
+    @ManyToOne
+    @JoinColumn(name="ville_id")
+    private Ville ville;
+
     public Contact(String nom, String prenom, LocalDate dtCreate, String adresse, String email, String tel) {
         this.nom = nom;
         this.prenom = prenom;
