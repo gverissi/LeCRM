@@ -3,10 +3,7 @@ package com.example.lecrm.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -23,6 +20,10 @@ public class Contact {
     private String adresse;
     private String email;
     private String tel;
+
+    @ManyToOne
+    @JoinColumn(name="client_id")
+    private Client client;
 
     public Contact(String nom, String prenom, LocalDate dtCreate, String adresse, String email, String tel) {
         this.nom = nom;
