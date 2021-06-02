@@ -10,6 +10,7 @@ public interface ClientDaoInterface {
 
     Client findById(Integer id) throws DaoException;
 
-    List<Client> findAllByVilleName(String villeName);
+    void delete(Client client);
 
+    List<Client> findAllByVilleName(String villeName);
 }

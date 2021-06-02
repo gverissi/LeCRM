@@ -1,5 +1,6 @@
 package com.example.lecrm.service;
 
+import com.example.lecrm.dao.DaoException;
 import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
 import com.example.lecrm.entity.Ville;
@@ -14,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class crmServiceTest {
+class crmServiceFunctionalTest {
 
     @Autowired
     private CrmService crmService;
@@ -33,17 +34,6 @@ class crmServiceTest {
 
     @Test
     @Transactional
-    void createClient_Exception() {
-        // Given
-        Client client = new Client("Duponds", "description");
-        // When
-        Exception thrown = assertThrows(Exception.class, () -> crmService.createClient(client));
-        // Then
-        assertTrue(thrown.getMessage().contains("Duponds"));
-    }
-
-    @Test
-    @Transactional
     void createContactForClient() throws Exception {
         // Given
         Client client = new Client("nom", "description");
@@ -53,24 +43,6 @@ class crmServiceTest {
         // Then
         assertEquals(1, client.getContacts().size());
         assertEquals(contact, client.getContacts().get(0));
-    }
-
-    @Test
-    @Transactional
-    void createContactForClient_Exception() throws Exception {
-        // Given
-        Client client = new Client("nom", "description");
-        Contact contact1 = new Contact("nom1", "prenom", LocalDate.now(), "adresse", "email", "tel");
-        Contact contact2 = new Contact("nom2", "prenom", LocalDate.now(), "adresse", "email", "tel");
-        Contact contact3 = new Contact("nom3", "prenom", LocalDate.now(), "adresse", "email", "tel");
-        Contact contact4 = new Contact("nom4", "prenom", LocalDate.now(), "adresse", "email", "tel");
-        // When
-        crmService.createContactForAClient(client, contact1);
-        crmService.createContactForAClient(client, contact2);
-        crmService.createContactForAClient(client, contact3);
-        Exception thrown = assertThrows(Exception.class, () -> crmService.createContactForAClient(client, contact4));
-        // Then
-        assertTrue(thrown.getMessage().contains("3 contacts"));
     }
 
     @Test
@@ -89,6 +61,7 @@ class crmServiceTest {
     }
 
     @Test
+    @Transactional
     void findAllClientsByVilleName() throws Exception {
         // Given
         Contact contact1 = new Contact("nom1", "prenom", LocalDate.now(), "adresse", "email", "tel");
@@ -116,14 +89,47 @@ class crmServiceTest {
     }
 
     @Test
-    void updateContact() {
+    @Transactional
+    void updateContact() throws BllException, DaoException {
+        // Given
+        Client client = new Client("nom", "description");
+        Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
+        crmService.createContactForAClient(client, contact);
+        // When
+        contact.setNom("new Name");
+        crmService.updateContact(contact);
+        // Then
+        assertEquals("new Name", crmService.getContactById(contact.getIdContact()).getNom());
     }
 
     @Test
-    void deleteContact() {
+    @Transactional
+    void deleteContact() throws BllException {
+        // Given
+        Client client = new Client("nom", "description");
+        Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
+        crmService.createContactForAClient(client, contact);
+        // When
+        crmService.deleteContact(contact);
+        // Then
+        Exception thrown = assertThrows(DaoException.class, () -> crmService.getContactById(contact.getIdContact()));
+        assertTrue(thrown.getMessage().contains("There is no contact with id"));
+        assertEquals(0, crmService.getAllContactsOfAClient(client).size());
     }
 
     @Test
-    void deleteClient() {
+    void deleteClient() throws BllException {
+        // Given
+        Client client = new Client("nom", "description");
+        Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
+        crmService.createContactForAClient(client, contact);
+        // When
+        crmService.deleteClient(client);
+        // Then
+        Exception thrownClient = assertThrows(DaoException.class, () -> crmService.getClientById(client.getIdClient()));
+        assertTrue(thrownClient.getMessage().contains("There is no client with id"));
+        Exception thrownContact = assertThrows(DaoException.class, () -> crmService.getContactById(contact.getIdContact()));
+        assertTrue(thrownContact.getMessage().contains("There is no contact with id"));
     }
+
 }

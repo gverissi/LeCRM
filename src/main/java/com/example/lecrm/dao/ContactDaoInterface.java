@@ -4,7 +4,6 @@ import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ContactDaoInterface {
 

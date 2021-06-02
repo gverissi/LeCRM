@@ -22,7 +22,12 @@ public class ClientDaoHibernate implements ClientDaoInterface {
 
     @Override
     public Client findById(Integer id) throws DaoException {
-        return clientRepository.findById(id).orElseThrow(() -> new DaoException("There is no Client with id = " + id));
+        return clientRepository.findById(id).orElseThrow(() -> new DaoException("There is no client with id = " + id));
+    }
+
+    @Override
+    public void delete(Client client) {
+        clientRepository.delete(client);
     }
 
     @Override

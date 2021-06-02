@@ -2,6 +2,7 @@ package com.example.lecrm.service;
 
 import com.example.lecrm.dao.ClientDaoInterface;
 import com.example.lecrm.dao.ContactDaoInterface;
+import com.example.lecrm.dao.DaoException;
 import com.example.lecrm.dao.VilleDaoInterface;
 import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
@@ -81,16 +82,24 @@ public class CrmService {
         return clientDao.findAllByVilleName(villeName);
     }
 
-    public void updateContact() {
-
+    public void updateContact(Contact contact) {
+        contactDao.save(contact);
     }
 
-    public void deleteContact() {
-
+    public void deleteContact(Contact contact) {
+        contactDao.delete(contact);
     }
 
-    public void deleteClient() {
+    public void deleteClient(Client client) {
+        clientDao.delete(client);
+    }
 
+    public Contact getContactById(Integer idContact) throws DaoException {
+        return contactDao.findById(idContact);
+    }
+
+    public Client getClientById(Integer idClient) throws DaoException {
+        return clientDao.findById(idClient);
     }
 
 }

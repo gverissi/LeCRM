@@ -18,7 +18,7 @@ public class Client {
     private String nom;
     private String description;
 
-    @OneToMany(mappedBy="client")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy="client")
     private List<Contact> contacts = new ArrayList<>();
 
     public Client(String nom, String description) {
