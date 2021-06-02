@@ -3,6 +3,7 @@ package com.example.lecrm.service;
 import com.example.lecrm.dao.DaoException;
 import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
+import com.example.lecrm.entity.Passion;
 import com.example.lecrm.entity.Ville;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,7 @@ class crmServiceFunctionalTest {
     }
 
     @Test
+    @Transactional
     void deleteClient() throws BllException {
         // Given
         Client client = new Client("nom", "description");
@@ -130,6 +132,30 @@ class crmServiceFunctionalTest {
         assertTrue(thrownClient.getMessage().contains("There is no client with id"));
         Exception thrownContact = assertThrows(DaoException.class, () -> crmService.getContactById(contact.getIdContact()));
         assertTrue(thrownContact.getMessage().contains("There is no contact with id"));
+    }
+
+    @Test
+    @Transactional
+    void createPassion() {
+        // Given
+        Passion passion = new Passion("name");
+        // When
+        Passion createdPassion = crmService.createPassion(passion);
+        // Then
+        assertNotNull(createdPassion.getIdPassion());
+    }
+
+    @Test
+    @Transactional
+    void addPassionForAContact() throws BllException {
+        // Given
+        Passion passion = new Passion("name");
+        Client client = new Client("nom", "description");
+        Contact contact = new Contact("nom", "prenom", LocalDate.now(), "adresse", "email", "tel");
+        crmService.createContactForAClient(client, contact);
+        // When
+        crmService.addPassionForAContact(contact, passion);
+        // Then
     }
 
 }

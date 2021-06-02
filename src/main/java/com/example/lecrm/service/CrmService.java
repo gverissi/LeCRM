@@ -1,11 +1,9 @@
 package com.example.lecrm.service;
 
-import com.example.lecrm.dao.ClientDaoInterface;
-import com.example.lecrm.dao.ContactDaoInterface;
-import com.example.lecrm.dao.DaoException;
-import com.example.lecrm.dao.VilleDaoInterface;
+import com.example.lecrm.dao.*;
 import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
+import com.example.lecrm.entity.Passion;
 import com.example.lecrm.entity.Ville;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +17,14 @@ public class CrmService {
     private final ContactDaoInterface contactDao;
     private final ClientDaoInterface clientDao;
     private final VilleDaoInterface villeDao;
+    private final PassionDaoInterface passionDao;
 
     @Autowired
-    public CrmService(ContactDaoInterface contactDao, ClientDaoInterface clientDao, VilleDaoInterface villeDao) {
+    public CrmService(ContactDaoInterface contactDao, ClientDaoInterface clientDao, VilleDaoInterface villeDao, PassionDaoInterface passionDao) {
         this.contactDao = contactDao;
         this.clientDao = clientDao;
         this.villeDao = villeDao;
+        this.passionDao = passionDao;
     }
 
     /**
@@ -72,12 +72,10 @@ public class CrmService {
         contactDao.save(contact);
     }
 
-    @Transactional
     public List<Contact> getAllContactsOfAClient(Client client) {
         return contactDao.findAllByClient(client);
     }
 
-    @Transactional
     public List<Client> findAllClientsWithContactIn(String villeName) {
         return clientDao.findAllByVilleName(villeName);
     }
@@ -100,6 +98,19 @@ public class CrmService {
 
     public Client getClientById(Integer idClient) throws DaoException {
         return clientDao.findById(idClient);
+    }
+
+    @Transactional
+    public Passion createPassion(Passion passion) {
+        return passionDao.save(passion);
+    }
+
+    @Transactional
+    public void addPassionForAContact(Contact contact, Passion passion) throws BllException {
+        if (contact.getIdContact() == null) throw new BllException("Contact must exist in database to adding a passion!");
+        contact.addPassion(passion);
+        passionDao.save(passion);
+        contactDao.save(contact);
     }
 
 }

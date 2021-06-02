@@ -2,6 +2,7 @@ package com.example.lecrm.service;
 
 import com.example.lecrm.dao.ClientDaoInterface;
 import com.example.lecrm.dao.ContactDaoInterface;
+import com.example.lecrm.dao.PassionDaoInterface;
 import com.example.lecrm.dao.VilleDaoInterface;
 import com.example.lecrm.entity.Client;
 import com.example.lecrm.entity.Contact;
@@ -21,8 +22,9 @@ class crmServiceTestMock {
     private final ContactDaoInterface contactDaoMock = mock(ContactDaoInterface.class);
     private final ClientDaoInterface clientDaoMock = mock(ClientDaoInterface.class);
     private final VilleDaoInterface villeDaoMock = mock(VilleDaoInterface.class);
+    private final PassionDaoInterface passionDaoMock = mock(PassionDaoInterface.class);
 
-    private final CrmService crmService = new CrmService(contactDaoMock, clientDaoMock, villeDaoMock);
+    private final CrmService crmService = new CrmService(contactDaoMock, clientDaoMock, villeDaoMock, passionDaoMock);
 
     @BeforeAll
     void init() {
