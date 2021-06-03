@@ -1,5 +1,8 @@
 package com.example.lecrm.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idContact")
 public class Contact {
 
     @Id
@@ -23,6 +27,7 @@ public class Contact {
     private String email;
     private String tel;
 
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="client_id")
     private Client client;
