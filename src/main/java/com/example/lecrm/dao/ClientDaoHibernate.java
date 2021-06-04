@@ -35,4 +35,9 @@ public class ClientDaoHibernate implements ClientDaoInterface {
         return clientRepository.findAllByVilleName(villeName);
     }
 
+    @Override
+    public List<Client> findAll() {
+        return (List<Client>) clientRepository.findAll();
+    }
+
 }

@@ -113,4 +113,16 @@ public class CrmService {
         contactDao.save(contact);
     }
 
+    public List<Client> findAllClients() {
+        return clientDao.findAll();
+    }
+
+    public void updateClient(Client client) throws BllException {
+        createClient(client);
+    }
+
+    public void deleteClientById(Integer id) throws DaoException {
+        Client client = getClientById(id);
+        clientDao.delete(client);
+    }
 }

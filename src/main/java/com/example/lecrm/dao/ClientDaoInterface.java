@@ -13,4 +13,7 @@ public interface ClientDaoInterface {
     void delete(Client client);
 
     List<Client> findAllByVilleName(String villeName);
+
+    List<Client> findAll();
+
 }
